@@ -184,12 +184,15 @@ func (c *DynamoDB) BatchGetItem(input *BatchGetItemInput) (*BatchGetItemOutput, 
 func (c *DynamoDB) BatchGetItemWithContext(ctx aws.Context, input *BatchGetItemInput, opts ...request.Option) (*BatchGetItemOutput, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "BatchGetItemWithContext")
 	defer span.Finish()
-	span.LogFields(log.Object("request:", input))
 
 	req, out := c.BatchGetItemRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
-	return out, req.Send()
+	err := req.Send()
+	if err != nil {
+		span.LogFields(log.Object("request:", input))
+	}
+	return out, err
 }
 
 // BatchGetItemPages iterates over the pages of a BatchGetItem operation,
@@ -2327,12 +2330,16 @@ func (c *DynamoDB) GetItem(input *GetItemInput) (*GetItemOutput, error) {
 func (c *DynamoDB) GetItemWithContext(ctx aws.Context, input *GetItemInput, opts ...request.Option) (*GetItemOutput, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "GetItemWithContext")
 	defer span.Finish()
-	span.LogFields(log.Object("request:", input))
 
 	req, out := c.GetItemRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
-	return out, req.Send()
+
+	err := req.Send()
+	if err != nil {
+		span.LogFields(log.Object("request:", input))
+	}
+	return out, err
 }
 
 const opListBackups = "ListBackups"
@@ -4841,12 +4848,16 @@ func (c *DynamoDB) UpdateItem(input *UpdateItemInput) (*UpdateItemOutput, error)
 func (c *DynamoDB) UpdateItemWithContext(ctx aws.Context, input *UpdateItemInput, opts ...request.Option) (*UpdateItemOutput, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "UpdateItemWithContext")
 	defer span.Finish()
-	span.LogFields(log.Object("request:", input))
 
 	req, out := c.UpdateItemRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
-	return out, req.Send()
+
+	err := req.Send()
+	if err != nil {
+		span.LogFields(log.Object("request:", input))
+	}
+	return out, err
 }
 
 const opUpdateTable = "UpdateTable"
