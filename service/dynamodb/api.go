@@ -184,14 +184,19 @@ func (c *DynamoDB) BatchGetItem(input *BatchGetItemInput) (*BatchGetItemOutput, 
 func (c *DynamoDB) BatchGetItemWithContext(ctx aws.Context, input *BatchGetItemInput, opts ...request.Option) (*BatchGetItemOutput, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "dynamodb.BatchGetItemWithContext")
 	defer span.Finish()
+	span.LogFields(log.Object("input", input))
+
+	var err error
+	defer func() {
+		if err != nil {
+			span.LogFields(log.Object("err", err))
+		}
+	}()
 
 	req, out := c.BatchGetItemRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
-	err := req.Send()
-	if err != nil {
-		span.LogFields(log.Object("request:", input))
-	}
+	err = req.Send()
 	return out, err
 }
 
@@ -2331,14 +2336,20 @@ func (c *DynamoDB) GetItemWithContext(ctx aws.Context, input *GetItemInput, opts
 	span, ctx := opentracing.StartSpanFromContext(ctx, "dynamodb.GetItemWithContext")
 	defer span.Finish()
 
+	span.LogFields(log.Object("input", input))
+
+	var err error
+	defer func() {
+		if err != nil {
+			span.LogFields(log.Object("err", err))
+		}
+	}()
+
 	req, out := c.GetItemRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 
-	err := req.Send()
-	if err != nil {
-		span.LogFields(log.Object("request:", input))
-	}
+	err = req.Send()
 	return out, err
 }
 
@@ -4849,14 +4860,20 @@ func (c *DynamoDB) UpdateItemWithContext(ctx aws.Context, input *UpdateItemInput
 	span, ctx := opentracing.StartSpanFromContext(ctx, "dynamodb.UpdateItemWithContext")
 	defer span.Finish()
 
+	span.LogFields(log.Object("input", input))
+
+	var err error
+	defer func() {
+		if err != nil {
+			span.LogFields(log.Object("err", err))
+		}
+	}()
+
 	req, out := c.UpdateItemRequest(input)
 	req.SetContext(ctx)
 	req.ApplyOptions(opts...)
 
-	err := req.Send()
-	if err != nil {
-		span.LogFields(log.Object("request:", input))
-	}
+	err = req.Send()
 	return out, err
 }
 
