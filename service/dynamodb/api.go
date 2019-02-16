@@ -182,7 +182,7 @@ func (c *DynamoDB) BatchGetItem(input *BatchGetItemInput) (*BatchGetItemOutput, 
 // sub-contexts for http.Requests. See https://golang.org/pkg/context/
 // for more information on using Contexts.
 func (c *DynamoDB) BatchGetItemWithContext(ctx aws.Context, input *BatchGetItemInput, opts ...request.Option) (*BatchGetItemOutput, error) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, "BatchGetItemWithContext")
+	span, ctx := opentracing.StartSpanFromContext(ctx, "dynamodb.BatchGetItemWithContext")
 	defer span.Finish()
 
 	req, out := c.BatchGetItemRequest(input)
@@ -2328,7 +2328,7 @@ func (c *DynamoDB) GetItem(input *GetItemInput) (*GetItemOutput, error) {
 // sub-contexts for http.Requests. See https://golang.org/pkg/context/
 // for more information on using Contexts.
 func (c *DynamoDB) GetItemWithContext(ctx aws.Context, input *GetItemInput, opts ...request.Option) (*GetItemOutput, error) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, "GetItemWithContext")
+	span, ctx := opentracing.StartSpanFromContext(ctx, "dynamodb.GetItemWithContext")
 	defer span.Finish()
 
 	req, out := c.GetItemRequest(input)
@@ -4846,7 +4846,7 @@ func (c *DynamoDB) UpdateItem(input *UpdateItemInput) (*UpdateItemOutput, error)
 // sub-contexts for http.Requests. See https://golang.org/pkg/context/
 // for more information on using Contexts.
 func (c *DynamoDB) UpdateItemWithContext(ctx aws.Context, input *UpdateItemInput, opts ...request.Option) (*UpdateItemOutput, error) {
-	span, ctx := opentracing.StartSpanFromContext(ctx, "UpdateItemWithContext")
+	span, ctx := opentracing.StartSpanFromContext(ctx, "dynamodb.UpdateItemWithContext")
 	defer span.Finish()
 
 	req, out := c.UpdateItemRequest(input)
